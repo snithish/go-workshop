@@ -27,7 +27,7 @@ Build (create an executable) and then run it
 ---
 
 **Exercise**
-- What happens when we try to ru compiled binary in another OS?
+- What happens when we try to run compiled binary in another OS?
 - How to build OS specific binaries?
 
 ```sh
