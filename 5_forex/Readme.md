@@ -15,7 +15,7 @@ Build the micro service
 ```sh
 make run
 ```
-Runs the service on port $PORT
+Runs the service on port 8080
 
 # Learnings
 
@@ -27,3 +27,7 @@ Runs the service on port $PORT
     - Custom Interface to mock struct         
 - Error values
     - Differentiating failures using error type
+    
+# Exercise
+- Binding validators
+    - `AmountToConvert` must be greater than 0
