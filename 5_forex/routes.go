@@ -2,13 +2,17 @@ package main
 
 import (
 	"forex/controllers"
+	"forex/http_resource"
 	"forex/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"net/http"
 )
 
 func InitializeRoutes() *gin.Engine {
 	var router = gin.Default()
+	httpClient := http.DefaultClient
+	http_resource.NewExchangeApi(httpClient)
 	conversionController := controllers.NewConversionController()
 	router.POST("/v1/convert", conversionController.Convert)
 
