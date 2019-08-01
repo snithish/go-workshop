@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go/types"
 	"programming_constructs/another_package"
+	"strconv"
 )
 
 const BUZZ string = "Buzz"
@@ -30,4 +31,25 @@ func main() {
 		fmt.Println(another_package.AnotherFizz)
 		fmt.Println(another_package.anotherFizz) // unexported like private scope
 	}
+
+	// Generate FizzBuzz for n = 5
+
+	var result []string // slice declaration
+
+	for i := 0; i < 5; i++ {
+		if i % 3 == 0 {
+			append(result, FIZZ) // Why does this fail?
+		}
+		else if i % 5 == 0 {
+			append(result, BUZZ) // Why does this fail?
+		} else {
+			append(result, fmt.Sprint("%d", i))
+		}
+	}
+
+	for v := range result {
+		fmt.Println(v)
+	}
+
+	//Slices are immutable
 }
