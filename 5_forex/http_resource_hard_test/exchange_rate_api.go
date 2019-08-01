@@ -1,4 +1,4 @@
-package http_resource
+package http_resource_hard_test
 
 import (
 	"encoding/json"
@@ -6,6 +6,7 @@ import (
 	"forex/errors"
 	"forex/models"
 	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
 )
 
@@ -14,10 +15,10 @@ type ExchangeApi interface {
 }
 
 type exchangeApi struct {
-	httpClient HttpClient
+	httpClient *http.Client
 }
 
-func NewExchangeApi(httpClient HttpClient) ExchangeApi {
+func NewExchangeApi(httpClient *http.Client) ExchangeApi {
 	return &exchangeApi{httpClient: httpClient}
 }
 
