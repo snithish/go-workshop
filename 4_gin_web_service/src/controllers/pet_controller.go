@@ -1,7 +1,9 @@
 package controllers
 
 import (
-	"net/http"
+	"4_gin_web_service/src/models"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/sirupsen/logrus"
 )
 
 type PetController interface {
@@ -17,9 +19,18 @@ func NewPetController() PetController {
 }
 
 func (ctrl *petController) CreatePet(ctx Context) {
-	ctx.JSON(http.StatusOK, &struct {
-		Message string `json:"message"`
-	}{
-		Message: "hello",
-	})
+	var createPetRequest models.CreatePetRequest
+	bindingError := ctx.ShouldBindBodyWith(&createPetRequest, binding.JSON)
+	if  bindingError != nil {
+		logrus.Error("Create pet request object serialization failed because " + bindingError.Error())
+		SendBadRequest(ctx)
+		return
+	}
+	validationError := createPetRequest.Validate()
+	if validationError != nil {
+		logrus.Error("Request validation failed because " + validationError.Error())
+		SendInvalidInput(ctx)
+		return
+	}
+	SendRequestOK(ctx)
 }
