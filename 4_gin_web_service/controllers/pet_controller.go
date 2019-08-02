@@ -5,11 +5,15 @@ import (
 	"4_gin_web_service/services"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/sirupsen/logrus"
+	"net/http"
+	"strconv"
 )
 
 type PetController interface {
 	CreatePet(ctx Context)
 	UpdatePet(ctx Context)
+	DeletePet(ctx Context)
+	GetPet(ctx Context)
 }
 
 type petController struct {
@@ -66,4 +70,48 @@ func (ctrl petController) UpdatePet(ctx Context) {
 		return
 	}
 	SendRequestOK(ctx)
+}
+
+func (ctrl petController) DeletePet(ctx Context) {
+	petIDString := ctx.Param("petID")
+	if petIDString == "" {
+		logrus.Error("Pet identifier not provided")
+		SendBadRequest(ctx)
+		return
+	}
+	petID, validationError := strconv.Atoi(petIDString)
+	if validationError != nil {
+		logrus.Error("invalid pet identifier provided")
+		SendInvalidInput(ctx)
+		return
+	}
+	serviceError := ctrl.petService.DeletePet(petID)
+	if serviceError != nil {
+		logrus.Error("Deleting pet failed because " + serviceError.Error())
+		SendNotFound(ctx)
+		return
+	}
+	SendRequestOK(ctx)
+}
+
+func (ctrl petController) GetPet(ctx Context) {
+	petIDString := ctx.Param("petID")
+	if petIDString == "" {
+		logrus.Error("Pet identifier not provided")
+		SendBadRequest(ctx)
+		return
+	}
+	petID, validationError := strconv.Atoi(petIDString)
+	if validationError != nil {
+		logrus.Error("invalid pet identifier provided")
+		SendInvalidInput(ctx)
+		return
+	}
+	pet, serviceError := ctrl.petService.GetPet(petID)
+	if serviceError != nil {
+		logrus.Error("Fetching pet failed because " + serviceError.Error())
+		SendNotFound(ctx)
+		return
+	}
+	SendMessageWithStatus(ctx, http.StatusOK, pet)
 }

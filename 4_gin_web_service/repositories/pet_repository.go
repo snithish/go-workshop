@@ -15,6 +15,8 @@ var (
 type PetRepository interface {
 	Save(pet models.Pet) error
 	Update(pet models.Pet) error
+	Delete(petID int) error
+	Get(petID int) (models.Pet, error)
 }
 
 type petRepository struct {
@@ -38,6 +40,22 @@ func (petRepository petRepository) Update(pet models.Pet) error {
 	}
 	pets[pet.Id] = pet
 	return nil
+}
+
+func (petRepository petRepository) Delete(petID int) error {
+	if !petRepository.exists(petID) {
+		return ErrPetDoesNotExist
+	}
+	delete(pets, petID)
+	return nil
+}
+
+func (petRepository petRepository) Get(petID int) (models.Pet, error) {
+	pet, exists := pets[petID]
+	if !exists {
+		return models.Pet{}, ErrPetDoesNotExist
+	}
+	return pet, nil
 }
 
 func (petRepository petRepository) exists(id int) bool {

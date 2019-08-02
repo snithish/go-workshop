@@ -65,7 +65,7 @@ func SendInvalidInputWithMessage(ctx Context, message string) {
 	SendMessageWithStatus(ctx, http.StatusMethodNotAllowed, responseMap)
 }
 
-func SendMessageWithStatus(ctx Context, httpStatusCode int, message models.GenericMsgResp) {
+func SendMessageWithStatus(ctx Context, httpStatusCode int, message interface{}) {
 	ctx.JSON(httpStatusCode,
 		message,
 	)

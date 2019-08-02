@@ -8,6 +8,8 @@ import (
 type PetService interface {
 	CreatePet(request models.Pet) error
 	UpdatePet(request models.Pet) error
+	DeletePet(petID int) error
+	GetPet(petID int) (models.Pet, error)
 }
 
 type petService struct {
@@ -34,4 +36,20 @@ func (petService petService) UpdatePet(request models.Pet) error {
 		return updateError
 	}
 	return nil
+}
+
+func (petService petService) DeletePet(petID int) error {
+	deleteError := petService.petRepository.Delete(petID)
+	if deleteError != nil {
+		return deleteError
+	}
+	return nil
+}
+
+func (petService petService) GetPet(petID int) (models.Pet, error) {
+	pet, deleteError := petService.petRepository.Get(petID)
+	if deleteError != nil {
+		return models.Pet{}, deleteError
+	}
+	return pet, nil
 }
