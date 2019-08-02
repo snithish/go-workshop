@@ -6,10 +6,10 @@ import (
 )
 
 const (
-	Message    = "message"
-	BadRequest = "Bad Request"
+	Message      = "message"
+	BadRequest   = "Bad Request"
 	InvalidInput = "Invalid Input"
-	OK         = "OK"
+	OK           = "OK"
 )
 
 func SendBadRequest(ctx Context) {

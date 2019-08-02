@@ -1,37 +1,26 @@
-# Genesis
+# Pet Store
 
-Starting point of any language learning.
-
-# Folder Structure:
-- `main.go`
-
-# Executing Go File
+An example documenting folder structure and code organization for a Gin webservice.
+    
+# Build Project
 ```sh
-go run main.go
+make build
 ```
-Executes a Go file
 
-# Create an executable
+# Start service
 ```sh
-go build
-./hello_world
+make run
 ```
-Build (create an executable) and then run it
 
 # Learnings
-- `main function` 
-    - entry point for programming execution  
-    - should be in main package
+- define routes and handlers -> Controllers 
+- Reading reading request body, path param and query param
+- Request body JSON to struct using `json tags`
+- Model validations
+- Mocking dependencies 
 - import external package `fmt` for printing to console
 
 ---
 
 **Exercise**
-- What happens when we try to ru compiled binary in another OS?
-- How to build OS specific binaries?
-
-```sh
-GOOS=linux go build
-./hello_world
-```
-**_exec format error: ./hello_world_**
+- Instead of `Validate()` method on models use https://github.com/gin-gonic/gin#custom-validators

@@ -14,14 +14,13 @@ type petController struct {
 }
 
 func NewPetController() PetController {
-	return &petController{
-	}
+	return &petController{}
 }
 
 func (ctrl *petController) CreatePet(ctx Context) {
 	var createPetRequest models.CreatePetRequest
 	bindingError := ctx.ShouldBindBodyWith(&createPetRequest, binding.JSON)
-	if  bindingError != nil {
+	if bindingError != nil {
 		logrus.Error("Create pet request object serialization failed because " + bindingError.Error())
 		SendBadRequest(ctx)
 		return

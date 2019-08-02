@@ -1,7 +1,7 @@
 package controllers
 
 import (
-"github.com/gin-gonic/gin/binding"
+	"github.com/gin-gonic/gin/binding"
 )
 
 type Context interface {
