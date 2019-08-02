@@ -5,18 +5,12 @@ import (
 	"4_gin_web_service/services"
 	"bytes"
 	"github.com/gin-gonic/gin"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
-
-type CreatePetRequest struct {
-	Id        int      `json:"id" binding:"required"`
-	Name      string   `json:"name" binding:"required"`
-	PhotoUrls []string `json:"photoUrls" binding:"dive,required"`
-	Status    string   `json:"status" binding:"required"`
-}
 
 func badResponseValidator(recorder *httptest.ResponseRecorder, t *testing.T) {
 	assert.Equal(t, 400, recorder.Code)
@@ -53,6 +47,7 @@ func Test_petController_CreatePet(t *testing.T) {
 		context, _ := gin.CreateTestContext(recorder)
 		context.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString(tt.args.requestBody))
 		t.Run(tt.name, func(t *testing.T) {
+			gomock.NewController(t)
 			repository := repositories.NewPetRepository()
 			service := services.NewPetService(repository)
 			controller := NewPetController(service)

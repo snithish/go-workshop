@@ -115,4 +115,10 @@ modules.xml
 # DS_Store
 **/.DS_Store
 
+# Generated_Mocks
+**/generated_Mocks/
+
+# Envrc
+**/.envrc
+
 # End of https://www.gitignore.io/api/go,intellij+all
