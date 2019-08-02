@@ -10,7 +10,7 @@ var allowedStatuses = []string{"available", "pending", "sold"}
 type Pet struct {
 	Id        int      `json:"id" binding:"required"`
 	Name      string   `json:"name" binding:"required"`
-	PhotoUrls []string `json:"photoUrls" binding:"dive,required"`
+	PhotoUrls []string `json:"photoUrls" binding:"gt=0"`
 	Status    string   `json:"status" binding:"required"`
 }
 
