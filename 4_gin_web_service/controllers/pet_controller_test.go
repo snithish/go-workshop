@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"4_gin_web_service/repositories"
+	"4_gin_web_service/services"
 	"bytes"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -51,7 +53,9 @@ func Test_petController_CreatePet(t *testing.T) {
 		context, _ := gin.CreateTestContext(recorder)
 		context.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString(tt.args.requestBody))
 		t.Run(tt.name, func(t *testing.T) {
-			controller := NewPetController()
+			repository := repositories.NewPetRepository()
+			service := services.NewPetService(repository)
+			controller := NewPetController(service)
 			controller.CreatePet(context)
 			tt.args.responseValidator(recorder, t)
 		})

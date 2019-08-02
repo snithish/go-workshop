@@ -1,7 +1,7 @@
 build:
 	go fmt ./...
 	go vet ./...
-	go build -o ./pet_store
+	go build -o ./bin/pet_store
 
 run: build
-	./pet_store
+	./bin/pet_store

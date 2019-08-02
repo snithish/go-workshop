@@ -21,7 +21,7 @@ func NewPetService(petRepository repositories.PetRepository) PetService {
 
 func (petService petService) CreatePet(request models.Pet) error {
 	persistError := petService.petRepository.Save(request)
-	if persistError != nil{
+	if persistError != nil {
 		return persistError
 	}
 	return nil
