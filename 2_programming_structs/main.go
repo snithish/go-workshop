@@ -51,5 +51,24 @@ func main() {
 		fmt.Println(v)
 	}
 
+	type Item struct {
+		name string
+		Price float64
+	}
+
+	item := Item{
+		name:  "Go Sticker",
+		Price: 12.98,
+	}
+
+	fmt.Printf("Item is: %+v", item)
+
+	exclusiveItem := another_package.ExclusiveItem{
+		// contains name field but can't be exported
+		Price: 0,
+	}
+
+	fmt.Printf("Exclusive Item is: %+v", exclusiveItem)
+
 	//Slices are immutable
 }
