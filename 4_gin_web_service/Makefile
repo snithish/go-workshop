@@ -1,6 +1,7 @@
 build:
 	go fmt ./...
 	go vet ./...
+	richgo test ./... -v
 	go build -o ./bin/pet_store
 
 run: build
