@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"4_gin_web_service/models"
+	"4_gin_web_service/services"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/sirupsen/logrus"
 )
@@ -11,14 +12,17 @@ type PetController interface {
 }
 
 type petController struct {
+	petService services.PetService
 }
 
-func NewPetController() PetController {
-	return &petController{}
+func NewPetController(petService services.PetService) PetController {
+	return &petController{
+		petService: petService,
+	}
 }
 
-func (ctrl *petController) CreatePet(ctx Context) {
-	var createPetRequest models.CreatePetRequest
+func (ctrl petController) CreatePet(ctx Context) {
+	var createPetRequest models.Pet
 	bindingError := ctx.ShouldBindBodyWith(&createPetRequest, binding.JSON)
 	if bindingError != nil {
 		logrus.Error("Create pet request object serialization failed because " + bindingError.Error())
@@ -31,5 +35,11 @@ func (ctrl *petController) CreatePet(ctx Context) {
 		SendInvalidInput(ctx)
 		return
 	}
-	SendRequestOK(ctx)
+	serviceError := ctrl.petService.CreatePet(createPetRequest)
+	if serviceError != nil {
+		logrus.Error("Creating pet failed because " + serviceError.Error())
+		SendConflict(ctx)
+		return
+	}
+	SendRequestCreated(ctx)
 }

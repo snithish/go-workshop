@@ -7,7 +7,7 @@ import (
 
 var allowedStatuses = []string{"available", "pending", "sold"}
 
-type CreatePetRequest struct {
+type Pet struct {
 	Id        int      `json:"id" binding:"required"`
 	Name      string   `json:"name" binding:"required"`
 	PhotoUrls []string `json:"photoUrls" binding:"dive,required"`
@@ -15,7 +15,7 @@ type CreatePetRequest struct {
 }
 
 //TODO: Move this to a tag based validation https://github.com/gin-gonic/gin#custom-validators
-func (c CreatePetRequest) Validate() error {
+func (c Pet) Validate() error {
 	if helpers.ContainsString(allowedStatuses, c.Status) {
 		return nil
 	}

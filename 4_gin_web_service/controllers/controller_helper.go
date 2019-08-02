@@ -10,6 +10,8 @@ const (
 	BadRequest   = "Bad Request"
 	InvalidInput = "Invalid Input"
 	OK           = "OK"
+	Created      = "Created"
+	Conflict     = "Conflict"
 )
 
 func SendBadRequest(ctx Context) {
@@ -29,9 +31,23 @@ func SendBadRequestWithMessage(ctx Context, message string) {
 
 func SendRequestOK(ctx Context) {
 	responseMap := models.GenericMsgResp{
-		Message: "OK",
+		Message: OK,
 	}
 	SendMessageWithStatus(ctx, http.StatusOK, responseMap)
+}
+
+func SendConflict(ctx Context) {
+	responseMap := models.GenericMsgResp{
+		Message: Conflict,
+	}
+	SendMessageWithStatus(ctx, http.StatusConflict, responseMap)
+}
+
+func SendRequestCreated(ctx Context) {
+	responseMap := models.GenericMsgResp{
+		Message: Created,
+	}
+	SendMessageWithStatus(ctx, http.StatusCreated, responseMap)
 }
 
 func SendInvalidInputWithMessage(ctx Context, message string) {
