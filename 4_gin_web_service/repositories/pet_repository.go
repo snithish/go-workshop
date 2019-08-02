@@ -5,8 +5,6 @@ import (
 	"errors"
 )
 
-var pets = make(map[int]models.Pet)
-
 var (
 	ErrPetExists       = errors.New("pet with given id already exists")
 	ErrPetDoesNotExist = errors.New("pet with given id already exists")
@@ -20,17 +18,20 @@ type PetRepository interface {
 }
 
 type petRepository struct {
+	pets map[int]models.Pet
 }
 
 func NewPetRepository() PetRepository {
-	return petRepository{}
+	return petRepository{
+		pets: make(map[int]models.Pet),
+	}
 }
 
 func (petRepository petRepository) Save(pet models.Pet) error {
 	if petRepository.exists(pet.Id) {
 		return ErrPetExists
 	}
-	pets[pet.Id] = pet
+	petRepository.pets[pet.Id] = pet
 	return nil
 }
 
@@ -38,7 +39,7 @@ func (petRepository petRepository) Update(pet models.Pet) error {
 	if !petRepository.exists(pet.Id) {
 		return ErrPetDoesNotExist
 	}
-	pets[pet.Id] = pet
+	petRepository.pets[pet.Id] = pet
 	return nil
 }
 
@@ -46,12 +47,12 @@ func (petRepository petRepository) Delete(petID int) error {
 	if !petRepository.exists(petID) {
 		return ErrPetDoesNotExist
 	}
-	delete(pets, petID)
+	delete(petRepository.pets, petID)
 	return nil
 }
 
 func (petRepository petRepository) Get(petID int) (models.Pet, error) {
-	pet, exists := pets[petID]
+	pet, exists := petRepository.pets[petID]
 	if !exists {
 		return models.Pet{}, ErrPetDoesNotExist
 	}
@@ -59,6 +60,6 @@ func (petRepository petRepository) Get(petID int) (models.Pet, error) {
 }
 
 func (petRepository petRepository) exists(id int) bool {
-	_, exists := pets[id]
+	_, exists := petRepository.pets[id]
 	return exists
 }
