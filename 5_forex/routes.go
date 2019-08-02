@@ -12,8 +12,8 @@ import (
 func InitializeRoutes() *gin.Engine {
 	var router = gin.Default()
 	httpClient := http.DefaultClient
-	http_resource.NewExchangeApi(httpClient)
-	conversionController := controllers.NewConversionController()
+	exchangeApi := http_resource.NewExchangeApi(httpClient)
+	conversionController := controllers.NewConversionController(exchangeApi)
 	router.POST("/v1/convert", conversionController.Convert)
 
 	// Because of lack of generic body can't be generalized as in Spring

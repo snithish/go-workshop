@@ -9,19 +9,15 @@ import (
 	"net/http/httptest"
 )
 
-type ExchangeApi interface {
-	GetRates(conversionRequest models.ConversionRequest) (float64, error)
-}
-
-type exchangeApi struct {
+type ExchangeApi struct {
 	httpClient HttpClient
 }
 
 func NewExchangeApi(httpClient HttpClient) ExchangeApi {
-	return &exchangeApi{httpClient: httpClient}
+	return ExchangeApi{httpClient: httpClient}
 }
 
-func (e exchangeApi) GetRates(conversionRequest models.ConversionRequest) (float64, error) {
+func (e ExchangeApi) GetRates(conversionRequest models.ConversionRequest) (float64, error) {
 	httptest.NewRecorder()
 	url := fmt.Sprintf("https://api.exchangeratesapi.io/latest?base=%s&&symbols=%s,%s",
 		conversionRequest.SourceCurrency,
@@ -39,7 +35,7 @@ func (e exchangeApi) GetRates(conversionRequest models.ConversionRequest) (float
 		return rates[conversionRequest.TargetCurrency].(float64), nil
 	}
 	if resp.StatusCode == 400 {
-		return 0.0, errors.BadRequest{ErrMsg: "did not understand currency"}
+		return 0.0, &errors.BadRequest{ErrMsg: "did not understand currency"}
 	}
 	return 0.0, errors.InternalError(fmt.Sprintf("Add specific handler for %d status code", resp.StatusCode))
 }
