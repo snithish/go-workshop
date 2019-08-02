@@ -7,10 +7,14 @@ import (
 
 var pets = make(map[int]models.Pet)
 
-var petExistsErr = errors.New("pet with given id already exists")
+var (
+	ErrPetExists       = errors.New("pet with given id already exists")
+	ErrPetDoesNotExist = errors.New("pet with given id already exists")
+)
 
 type PetRepository interface {
 	Save(pet models.Pet) error
+	Update(pet models.Pet) error
 }
 
 type petRepository struct {
@@ -22,7 +26,15 @@ func NewPetRepository() PetRepository {
 
 func (petRepository petRepository) Save(pet models.Pet) error {
 	if petRepository.exists(pet.Id) {
-		return petExistsErr
+		return ErrPetExists
+	}
+	pets[pet.Id] = pet
+	return nil
+}
+
+func (petRepository petRepository) Update(pet models.Pet) error {
+	if !petRepository.exists(pet.Id) {
+		return ErrPetDoesNotExist
 	}
 	pets[pet.Id] = pet
 	return nil

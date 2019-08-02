@@ -7,6 +7,7 @@ import (
 
 type PetService interface {
 	CreatePet(request models.Pet) error
+	UpdatePet(request models.Pet) error
 }
 
 type petService struct {
@@ -23,6 +24,14 @@ func (petService petService) CreatePet(request models.Pet) error {
 	persistError := petService.petRepository.Save(request)
 	if persistError != nil {
 		return persistError
+	}
+	return nil
+}
+
+func (petService petService) UpdatePet(request models.Pet) error {
+	updateError := petService.petRepository.Update(request)
+	if updateError != nil {
+		return updateError
 	}
 	return nil
 }

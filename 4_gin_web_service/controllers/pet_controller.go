@@ -9,6 +9,7 @@ import (
 
 type PetController interface {
 	CreatePet(ctx Context)
+	UpdatePet(ctx Context)
 }
 
 type petController struct {
@@ -42,4 +43,27 @@ func (ctrl petController) CreatePet(ctx Context) {
 		return
 	}
 	SendRequestCreated(ctx)
+}
+
+func (ctrl petController) UpdatePet(ctx Context) {
+	var createPetRequest models.Pet
+	bindingError := ctx.ShouldBindBodyWith(&createPetRequest, binding.JSON)
+	if bindingError != nil {
+		logrus.Error("Update pet request object serialization failed because " + bindingError.Error())
+		SendBadRequest(ctx)
+		return
+	}
+	validationError := createPetRequest.Validate()
+	if validationError != nil {
+		logrus.Error("Request validation failed because " + validationError.Error())
+		SendInvalidInput(ctx)
+		return
+	}
+	serviceError := ctrl.petService.UpdatePet(createPetRequest)
+	if serviceError != nil {
+		logrus.Error("Updating pet failed because " + serviceError.Error())
+		SendNotFound(ctx)
+		return
+	}
+	SendRequestOK(ctx)
 }

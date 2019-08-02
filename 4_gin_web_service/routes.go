@@ -20,6 +20,7 @@ func InitializeRoutes() *gin.Engine {
 	petGroup := router.Group("/pet")
 	{
 		petGroup.POST("", getGinHandler(petController.CreatePet))
+		petGroup.PUT("", getGinHandler(petController.UpdatePet))
 	}
 
 	router.NoRoute(func(ctx *gin.Context) {

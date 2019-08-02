@@ -12,6 +12,7 @@ const (
 	OK           = "OK"
 	Created      = "Created"
 	Conflict     = "Conflict"
+	NotFound     = "Not Found"
 )
 
 func SendBadRequest(ctx Context) {
@@ -41,6 +42,13 @@ func SendConflict(ctx Context) {
 		Message: Conflict,
 	}
 	SendMessageWithStatus(ctx, http.StatusConflict, responseMap)
+}
+
+func SendNotFound(ctx Context) {
+	responseMap := models.GenericMsgResp{
+		Message: NotFound,
+	}
+	SendMessageWithStatus(ctx, http.StatusNotFound, responseMap)
 }
 
 func SendRequestCreated(ctx Context) {
