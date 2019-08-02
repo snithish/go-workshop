@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"4_gin_web_service/src/models"
+	"4_gin_web_service/models"
 	"net/http"
 )
 

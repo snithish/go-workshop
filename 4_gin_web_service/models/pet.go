@@ -1,7 +1,7 @@
 package models
 
 import (
-	"4_gin_web_service/src/helpers"
+	"4_gin_web_service/helpers"
 	"errors"
 )
 

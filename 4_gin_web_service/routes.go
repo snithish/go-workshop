@@ -1,7 +1,7 @@
 package main
 
 import (
-	"4_gin_web_service/src/controllers"
+	"4_gin_web_service/controllers"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
