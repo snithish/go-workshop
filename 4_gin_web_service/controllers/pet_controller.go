@@ -3,6 +3,7 @@ package controllers
 import (
 	"4_gin_web_service/models"
 	"4_gin_web_service/services"
+	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -10,10 +11,10 @@ import (
 )
 
 type PetController interface {
-	CreatePet(ctx Context)
-	UpdatePet(ctx Context)
-	DeletePet(ctx Context)
-	GetPet(ctx Context)
+	CreatePet(ctx *gin.Context)
+	UpdatePet(ctx *gin.Context)
+	DeletePet(ctx *gin.Context)
+	GetPet(ctx *gin.Context)
 }
 
 type petController struct {
@@ -26,7 +27,7 @@ func NewPetController(petService services.PetService) PetController {
 	}
 }
 
-func (ctrl petController) CreatePet(ctx Context) {
+func (ctrl petController) CreatePet(ctx *gin.Context) {
 	var createPetRequest models.Pet
 	bindingError := ctx.ShouldBindBodyWith(&createPetRequest, binding.JSON)
 	if bindingError != nil {
@@ -49,7 +50,7 @@ func (ctrl petController) CreatePet(ctx Context) {
 	SendRequestCreated(ctx)
 }
 
-func (ctrl petController) UpdatePet(ctx Context) {
+func (ctrl petController) UpdatePet(ctx *gin.Context) {
 	var createPetRequest models.Pet
 	bindingError := ctx.ShouldBindBodyWith(&createPetRequest, binding.JSON)
 	if bindingError != nil {
@@ -72,7 +73,7 @@ func (ctrl petController) UpdatePet(ctx Context) {
 	SendRequestOK(ctx)
 }
 
-func (ctrl petController) DeletePet(ctx Context) {
+func (ctrl petController) DeletePet(ctx *gin.Context) {
 	petIDString := ctx.Param("petID")
 	if petIDString == "" {
 		logrus.Error("Pet identifier not provided")
@@ -94,7 +95,7 @@ func (ctrl petController) DeletePet(ctx Context) {
 	SendRequestOK(ctx)
 }
 
-func (ctrl petController) GetPet(ctx Context) {
+func (ctrl petController) GetPet(ctx *gin.Context) {
 	petIDString := ctx.Param("petID")
 	if petIDString == "" {
 		logrus.Error("Pet identifier not provided")

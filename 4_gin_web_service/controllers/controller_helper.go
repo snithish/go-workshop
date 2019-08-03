@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"4_gin_web_service/models"
+	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
@@ -15,57 +16,57 @@ const (
 	NotFound     = "Not Found"
 )
 
-func SendBadRequest(ctx Context) {
+func SendBadRequest(ctx *gin.Context) {
 	SendBadRequestWithMessage(ctx, BadRequest)
 }
 
-func SendInvalidInput(ctx Context) {
+func SendInvalidInput(ctx *gin.Context) {
 	SendInvalidInputWithMessage(ctx, InvalidInput)
 }
 
-func SendBadRequestWithMessage(ctx Context, message string) {
+func SendBadRequestWithMessage(ctx *gin.Context, message string) {
 	responseMap := models.GenericMsgResp{
 		Message: message,
 	}
 	SendMessageWithStatus(ctx, http.StatusBadRequest, responseMap)
 }
 
-func SendRequestOK(ctx Context) {
+func SendRequestOK(ctx *gin.Context) {
 	responseMap := models.GenericMsgResp{
 		Message: OK,
 	}
 	SendMessageWithStatus(ctx, http.StatusOK, responseMap)
 }
 
-func SendConflict(ctx Context) {
+func SendConflict(ctx *gin.Context) {
 	responseMap := models.GenericMsgResp{
 		Message: Conflict,
 	}
 	SendMessageWithStatus(ctx, http.StatusConflict, responseMap)
 }
 
-func SendNotFound(ctx Context) {
+func SendNotFound(ctx *gin.Context) {
 	responseMap := models.GenericMsgResp{
 		Message: NotFound,
 	}
 	SendMessageWithStatus(ctx, http.StatusNotFound, responseMap)
 }
 
-func SendRequestCreated(ctx Context) {
+func SendRequestCreated(ctx *gin.Context) {
 	responseMap := models.GenericMsgResp{
 		Message: Created,
 	}
 	SendMessageWithStatus(ctx, http.StatusCreated, responseMap)
 }
 
-func SendInvalidInputWithMessage(ctx Context, message string) {
+func SendInvalidInputWithMessage(ctx *gin.Context, message string) {
 	responseMap := models.GenericMsgResp{
 		Message: message,
 	}
 	SendMessageWithStatus(ctx, http.StatusMethodNotAllowed, responseMap)
 }
 
-func SendMessageWithStatus(ctx Context, httpStatusCode int, message interface{}) {
+func SendMessageWithStatus(ctx *gin.Context, httpStatusCode int, message interface{}) {
 	ctx.JSON(httpStatusCode,
 		message,
 	)

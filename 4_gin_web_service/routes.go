@@ -19,20 +19,14 @@ func InitializeRoutes() *gin.Engine {
 
 	petGroup := router.Group("/pet")
 	{
-		petGroup.POST("", getGinHandler(petController.CreatePet))
-		petGroup.PUT("", getGinHandler(petController.UpdatePet))
-		petGroup.DELETE("/:petID", getGinHandler(petController.DeletePet))
-		petGroup.GET("/:petID", getGinHandler(petController.GetPet))
+		petGroup.POST("", petController.CreatePet)
+		petGroup.PUT("", petController.UpdatePet)
+		petGroup.DELETE("/:petID", petController.DeletePet)
+		petGroup.GET("/:petID", petController.GetPet)
 	}
 
 	router.NoRoute(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{})
 	})
 	return router
-}
-
-func getGinHandler(appHandler controllers.AppContextHandlerFunc) gin.HandlerFunc {
-	return func(context *gin.Context) {
-		appHandler(context)
-	}
 }
