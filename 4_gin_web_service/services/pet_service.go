@@ -39,11 +39,11 @@ func (petService petService) UpdatePet(request models.Pet) error {
 }
 
 func (petService petService) DeletePet(petID int) error {
-	deleteError := petService.petRepository.Delete(petID)
-	if deleteError != nil {
-		return deleteError
+	if err := petService.petRepository.Delete(petID); err != nil {
+		return petService.petRepository.Delete(petID)
+	} else {
+		return nil
 	}
-	return nil
 }
 
 func (petService petService) GetPet(petID int) (models.Pet, error) {

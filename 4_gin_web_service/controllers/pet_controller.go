@@ -41,12 +41,12 @@ func (ctrl petController) CreatePet(ctx *gin.Context) {
 		SendInvalidInput(ctx)
 		return
 	}
-	serviceError := ctrl.petService.CreatePet(createPetRequest)
-	if serviceError != nil {
-		logrus.Error("Creating pet failed because " + serviceError.Error())
-		SendConflict(ctx)
-		return
-	}
+	ctrl.petService.CreatePet(createPetRequest)
+	//if serviceError != nil {
+	//	logrus.Error("Creating pet failed because " + serviceError.Error())
+	//	SendConflict(ctx)
+	//	return
+	//}
 	SendRequestCreated(ctx)
 }
 

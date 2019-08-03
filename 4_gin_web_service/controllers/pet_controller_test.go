@@ -56,22 +56,22 @@ func (suite *PetControllerTestSuite) TestCreatePet_WhenFailureInRequestBodyValid
 	suite.Require().Equal(http.StatusMethodNotAllowed, suite.recorder.Code)
 }
 
-func (suite *PetControllerTestSuite) TestCreatePet_WhenFailureInService() {
-	requestBody := `{"id":123123,"name":"doggie","photoUrls":["string"],"status":"available"}`
-	suite.context.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString(requestBody))
-	pet := models.Pet{
-		Id:        123123,
-		Name:      "doggie",
-		PhotoUrls: []string{"string"},
-		Status:    "available",
-	}
-
-	suite.mockPetService.EXPECT().CreatePet(pet).Return(errors.New("some error")).Times(1)
-
-	suite.petController.CreatePet(suite.context)
-
-	suite.Require().Equal(http.StatusConflict, suite.recorder.Code)
-}
+//func (suite *PetControllerTestSuite) TestCreatePet_WhenFailureInService() {
+//	requestBody := `{"id":123123,"name":"doggie","photoUrls":["string"],"status":"available"}`
+//	suite.context.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString(requestBody))
+//	pet := models.Pet{
+//		Id:        123123,
+//		Name:      "doggie",
+//		PhotoUrls: []string{"string"},
+//		Status:    "available",
+//	}
+//
+//	suite.mockPetService.EXPECT().CreatePet(pet).Return(errors.New("some error")).Times(1)
+//
+//	suite.petController.CreatePet(suite.context)
+//
+//	suite.Require().Equal(http.StatusConflict, suite.recorder.Code)
+//}
 
 func (suite *PetControllerTestSuite) TestCreatePet() {
 	requestBody := `{"id":123123,"name":"doggie","photoUrls":["string"],"status":"available"}`
